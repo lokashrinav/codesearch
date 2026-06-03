@@ -1,12 +1,15 @@
 package main
 
 import (
+	"database/sql"
 	"flag"
 	"fmt"
 	"os"
 
 	"github.com/lokashrinav/codesearch/internal/mcp"
 	"github.com/lokashrinav/codesearch/internal/storage"
+
+	_ "modernc.org/sqlite"
 )
 
 func main() {
@@ -18,7 +21,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	db, err := storage.OpenDB(*dbPath)
+	db, err := sql.Open("sqlite", *dbPath)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to open database: %v\n", err)
 		os.Exit(1)
@@ -26,8 +29,9 @@ func main() {
 	defer db.Close()
 
 	reader := storage.NewReader(db)
-	server := mcp.NewServer(reader)
+	server := mcp.NewServerWithDB(db, reader)
 
+	fmt.Fprintf(os.Stderr, "codesearch MCP server started (db: %s)\n", *dbPath)
 	if err := server.Run(); err != nil {
 		fmt.Fprintf(os.Stderr, "Server error: %v\n", err)
 		os.Exit(1)
