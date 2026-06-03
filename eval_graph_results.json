@@ -1,152 +1,27 @@
 {
   "total": 20,
-  "baseline": 13,
-  "graph": 7,
+  "baseline": 14,
+  "graph": 13,
   "disagreements": [
     {
-      "id": "django__django-10924",
+      "id": "django__django-11564",
       "winner": "baseline",
       "gt": [
-        "django/db/models/fields/__init__.py"
+        "django/conf/__init__.py"
       ],
       "baseline": [
-        "django/db/models/fields/files.py",
-        "django/db/models/fields/__init__.py"
+        "django/core/files/storage.py",
+        "django/contrib/staticfiles/templatetags/staticfiles.py",
+        "django/templatetags/static.py",
+        "django/conf/__init__.py",
+        "django/contrib/staticfiles/storage.py"
       ],
       "graph": [
-        "__init__.py"
+        "django/templatetags/static.py",
+        "django/contrib/staticfiles/storage.py",
+        "django/contrib/staticfiles/templatetags/staticfiles.py"
       ],
-      "seeds": 482
-    },
-    {
-      "id": "django__django-11039",
-      "winner": "baseline",
-      "gt": [
-        "django/core/management/commands/sqlmigrate.py"
-      ],
-      "baseline": [
-        "django/core/management/commands/sqlmigrate.py"
-      ],
-      "graph": [
-        "sqlmigrate.py"
-      ],
-      "seeds": 399
-    },
-    {
-      "id": "django__django-11099",
-      "winner": "baseline",
-      "gt": [
-        "django/contrib/auth/validators.py"
-      ],
-      "baseline": [
-        "django/contrib/auth/validators.py"
-      ],
-      "graph": [
-        "validators.py"
-      ],
-      "seeds": 382
-    },
-    {
-      "id": "django__django-11133",
-      "winner": "baseline",
-      "gt": [
-        "django/http/response.py"
-      ],
-      "baseline": [
-        "django/http/response.py"
-      ],
-      "graph": [
-        "response.py"
-      ],
-      "seeds": 351
-    },
-    {
-      "id": "django__django-11283",
-      "winner": "baseline",
-      "gt": [
-        "django/contrib/auth/migrations/0011_update_proxy_permissions.py"
-      ],
-      "baseline": [
-        "django/contrib/auth/migrations/0011_update_proxy_permissions.py"
-      ],
-      "graph": [
-        "django/db/migrations/operations/models.py"
-      ],
-      "seeds": 611
-    },
-    {
-      "id": "django__django-11815",
-      "winner": "baseline",
-      "gt": [
-        "django/db/migrations/serializer.py"
-      ],
-      "baseline": [
-        "django/db/migrations/serializer.py"
-      ],
-      "graph": [
-        "serializer.py"
-      ],
-      "seeds": 589
-    },
-    {
-      "id": "django__django-11905",
-      "winner": "baseline",
-      "gt": [
-        "django/db/models/lookups.py"
-      ],
-      "baseline": [
-        "django/db/models/lookups.py"
-      ],
-      "graph": [
-        "django/db/models/sql/query.py"
-      ],
-      "seeds": 266
-    },
-    {
-      "id": "django__django-11964",
-      "winner": "graph",
-      "gt": [
-        "django/db/models/enums.py"
-      ],
-      "baseline": [
-        "django/db/models/fields/__init__.py"
-      ],
-      "graph": [
-        "django/db/models/enums.py"
-      ],
-      "seeds": 477
-    },
-    {
-      "id": "django__django-12113",
-      "winner": "graph",
-      "gt": [
-        "django/db/backends/sqlite3/creation.py"
-      ],
-      "baseline": [
-        "django/test/utils.py",
-        "django/db/backends/sqlite3/base.py",
-        "django/test/testcases.py"
-      ],
-      "graph": [
-        "django/test/utils.py",
-        "django/db/backends/sqlite3/creation.py",
-        "django/test/runner.py"
-      ],
-      "seeds": 515
-    },
-    {
-      "id": "django__django-12125",
-      "winner": "baseline",
-      "gt": [
-        "django/db/migrations/serializer.py"
-      ],
-      "baseline": [
-        "django/db/migrations/serializer.py"
-      ],
-      "graph": [
-        "django/db/migrations/writer.py"
-      ],
-      "seeds": 512
+      "seeds": 260
     }
   ]
 }

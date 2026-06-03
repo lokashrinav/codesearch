@@ -53,14 +53,28 @@ def build_subgraph(db_path, query, max_seeds=25):
     for term in terms:
         cursor = conn.execute(
             "SELECT id, name, qualname, kind, file, line FROM idents "
-            "WHERE LOWER(qualname) LIKE ? OR LOWER(name) LIKE ? LIMIT 15",
+            "WHERE LOWER(qualname) LIKE ? OR LOWER(name) LIKE ? LIMIT 8",
             (f"%{term}%", f"%{term}%"))
         for row in cursor:
             if row[0] not in seen:
                 seen.add(row[0])
                 seeds.append(row)
 
+    # Score seeds by how many query terms match
+    scored = []
+    for sid, name, qn, kind, file, line in seeds:
+        score = 0
+        qn_lower = qn.lower()
+        name_lower = name.lower()
+        for t in terms:
+            if t in qn_lower: score += 2
+            if t in name_lower: score += 1
+        scored.append((score, sid, name, qn, kind, file, line))
+    scored.sort(reverse=True)
+    seeds = [(s[1], s[2], s[3], s[4], s[5], s[6]) for s in scored]
+
     lines = ["## Code Graph (indexed from actual Django repo)\n"]
+    lines.append("File paths below are relative to the Django repo root.\n")
     for sid, name, qn, kind, file, line in seeds[:max_seeds]:
         lines.append(f"### [{kind}] {qn}")
         lines.append(f"  File: {file}:{line}")
@@ -134,12 +148,14 @@ Output ONLY file paths from the Django repo, one per line. No explanation.""")
         resp_b = call_claude(f"""You are a fault localization tool for the Django web framework.
 Given this bug report AND a code graph extracted from the actual Django repository, predict which source files contain the bug.
 
+IMPORTANT: Output FULL file paths from the repo root (e.g., django/db/models/fields/__init__.py), not just filenames.
+
 Bug report:
 {issue[:2000]}
 
 {subgraph[:4000]}
 
-Based on the code graph, identify which files most likely contain the bug. Output ONLY file paths, one per line. No explanation.""")
+Based on the code graph above, identify which files most likely contain the bug. Output ONLY full file paths (from repo root), one per line. No explanation.""")
 
         files_a = extract_files(resp_a)
         files_b = extract_files(resp_b)
