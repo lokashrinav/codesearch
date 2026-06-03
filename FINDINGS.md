@@ -68,6 +68,18 @@ Raw Go parser (no build system) → SQLite fact graph → seed finding → local
     → User's subscription pays for [5]
 ```
 
+| 8 | Full-repo indexer | 1636 files, 33K idents, 255K edges in 11.5s (3.1s production). Finds gvisor-gpu-ckpt/loadLibcuda for CUDA query. |
+| 9 | **Zero-overlap query** | "container hangs when I try to save it while GPU is busy" — ZERO terms match mechanism names. LLM traces 8-step deadlock chain through Checkpoint→nvidiaHostSettings→CgroupRegistry→FDTable→devGoferFD. Produces ASCII deadlock diagram. |
+
+## Key Insight: Zero-Overlap Works
+
+The hardest test case — "container hangs when I try to save it while GPU is busy" — has no overlap between symptom terms (hangs, save, GPU, busy) and mechanism identifiers (cuCheckpointProcessLock, frontendFD, nvproxy). Yet the system produces a correct causal chain because:
+1. The graph connects "save" to `Checkpoint`, which connects to `nvidiaHostSettings`
+2. The LLM reasons about lock ordering and GPU device FDs from the graph structure
+3. The stateify annotations tell the LLM which types persist across save/restore
+
+The graph provides grounding. The LLM provides reasoning. Neither works alone.
+
 ## What's Next
 
 1. **Add nvproxy to indexed directories** — the GPU query would find frontendFD.afterLoadImpl directly
