@@ -4,13 +4,26 @@ import (
 	"database/sql"
 	"fmt"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 const ddl = `
 CREATE TABLE IF NOT EXISTS meta (
 	key   TEXT PRIMARY KEY,
 	value TEXT
+);
+
+CREATE TABLE IF NOT EXISTS edges (
+	src_id INTEGER NOT NULL,
+	dst_id INTEGER NOT NULL,
+	kind   TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS annotations (
+	file_path TEXT,
+	line      INTEGER,
+	text      TEXT,
+	near_type TEXT
 );
 
 CREATE TABLE IF NOT EXISTS identifiers (
@@ -124,7 +137,7 @@ PRAGMA synchronous = NORMAL;
 
 // OpenDB opens or creates a codesearch SQLite database.
 func OpenDB(path string) (*sql.DB, error) {
-	db, err := sql.Open("sqlite3", path+"?_journal_mode=WAL")
+	db, err := sql.Open("sqlite", path)
 	if err != nil {
 		return nil, fmt.Errorf("open db: %w", err)
 	}
