@@ -98,6 +98,24 @@ func Index(db *sql.DB, rootDir string, skipDirs []string) (Stats, error) {
 			}
 		}
 
+		// Extract import edges
+		for _, imp := range f.Imports {
+			if imp.Path != nil {
+				importPath := strings.Trim(imp.Path.Value, "\"")
+				importAlias := ""
+				if imp.Name != nil {
+					importAlias = imp.Name.Name
+				}
+				// Create edge: this package imports that package
+				pkgID := HashID(pkg)
+				importID := HashID(importPath)
+				insI.Exec(importID, filepath.Base(importPath), importPath, importPath, "package", "", 0)
+				insE.Exec(pkgID, importID, "imports")
+				_ = importAlias
+				stats.Edges++
+			}
+		}
+
 		for _, decl := range f.Decls {
 			switch d := decl.(type) {
 			case *ast.GenDecl:
