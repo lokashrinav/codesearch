@@ -1,0 +1,59 @@
+{
+  "total": 20,
+  "baseline_hits": 14,
+  "mechanism_hits": 17,
+  "disagreements": [
+    {
+      "id": "django__django-11564",
+      "gt": [
+        "django/conf/__init__.py"
+      ],
+      "baseline": [
+        "django/core/files/storage.py",
+        "django/contrib/staticfiles/storage.py",
+        "django/templatetags/static.py",
+        "django/contrib/staticfiles/templatetags/staticfiles.py"
+      ],
+      "mechanism": [
+        "django/contrib/staticfiles/storage.py",
+        "django/templatetags/static.py",
+        "django/core/files/storage.py",
+        "django/conf/__init__.py",
+        "django/contrib/staticfiles/templatetags/staticfiles.py"
+      ],
+      "baseline_hit": false,
+      "mechanism_hit": true
+    },
+    {
+      "id": "django__django-11964",
+      "gt": [
+        "django/db/models/enums.py"
+      ],
+      "baseline": [
+        "django/db/models/fields/__init__.py"
+      ],
+      "mechanism": [
+        "enums.py",
+        "MyChoice.c",
+        "django/db/models/enums.py"
+      ],
+      "baseline_hit": false,
+      "mechanism_hit": true
+    },
+    {
+      "id": "django__django-11999",
+      "gt": [
+        "django/db/models/fields/__init__.py"
+      ],
+      "baseline": [
+        "django/db/models/base.py"
+      ],
+      "mechanism": [
+        "Field.c",
+        "django/db/models/fields/__init__.py"
+      ],
+      "baseline_hit": false,
+      "mechanism_hit": true
+    }
+  ]
+}
