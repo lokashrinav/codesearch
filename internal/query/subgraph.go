@@ -36,9 +36,11 @@ func BuildSubgraph(db *sql.DB, query string, maxSeeds int) (string, error) {
 	var seeds []seedInfo
 
 	for _, term := range terms {
+		// Search both name and pkg_path for broader recall
 		rows, err := db.Query(
-			"SELECT id, name, pkg_path, kind, file_path, line FROM identifiers WHERE LOWER(pkg_path) LIKE ? LIMIT 15",
-			"%"+strings.ToLower(term)+"%")
+			`SELECT id, name, pkg_path, kind, file_path, line FROM identifiers
+			 WHERE LOWER(pkg_path) LIKE ? OR LOWER(name) LIKE ? LIMIT 15`,
+			"%"+strings.ToLower(term)+"%", "%"+strings.ToLower(term)+"%")
 		if err != nil {
 			continue
 		}
@@ -123,10 +125,20 @@ func identKindLabel(kind string) string {
 		return "type"
 	case "2":
 		return "field"
-	case "7":
+	case "3":
+		return "var"
+	case "4":
+		return "const"
+	case "5":
+		return "method"
+	case "6":
 		return "interface"
-	default:
+	case "7":
+		return "param"
+	case "func", "type", "field", "var", "const", "method", "interface", "class", "attr", "module", "import", "imethod", "package":
 		return kind
+	default:
+		return "ident"
 	}
 }
 
