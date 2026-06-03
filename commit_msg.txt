@@ -1,0 +1,7 @@
+Experiments 1-5: validating code search foundation
+
+Raw Go parser + SQLite + relevance-scored BFS works at gVisor scale.
+Exp 5 finds SaveRestoreExecConfig from "flag did nothing on restore"
+across kernel, control, cmd, and boot package boundaries in 3 seconds.
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
